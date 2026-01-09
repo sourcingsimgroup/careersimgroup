@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>CAREER SIMGROUP • Mini Job Portal</title>
   <meta name="description" content="CAREER SIMGROUP. Mini job portal dengan filter Branch → Area → Group Job (dependent), tampilan mobile & web, kartu kapsul, popup detail + Apply. Fokus: load data sempurna (CSV/JSON robust), cepat (cache + pager), fallback andal."/>
+
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
 
@@ -24,24 +25,28 @@
       --sel-w: 210px;
 
       --indigo:#4f46e5;
+      --blueDeep:#0f2a5f;
+
       --sky1:#dbeafe;
       --sky2:#ffffff;
 
       --ok:#10b981;
       --warn:#ef4444;
-      --chip-bg: rgba(255,255,255,.86);
+      --chip-bg: #ffffff;
       --chip-line: rgba(148,163,184,.35);
     }
 
     *{box-sizing:border-box}
     html,body{height:100%}
+
     body{
       margin:0;
       font-family:Montserrat,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
       color:var(--ink);
+      /* BG gradasi sky-blue → white (tanpa efek blur) */
       background:
-        radial-gradient(1200px 900px at 10% 12%, rgba(59,130,246,.18), transparent 55%),
-        radial-gradient(1200px 900px at 90% 8%, rgba(14,165,233,.16), transparent 60%),
+        radial-gradient(1200px 900px at 10% 12%, rgba(59,130,246,.16), transparent 55%),
+        radial-gradient(1200px 900px at 90% 8%, rgba(14,165,233,.12), transparent 60%),
         linear-gradient(180deg, var(--sky1) 0%, var(--sky2) 55%, #ffffff 100%);
       background-attachment: fixed;
       background-repeat:no-repeat;
@@ -49,10 +54,10 @@
 
     .wrap{max-width:1100px;margin:0 auto;padding:20px 16px 80px}
 
+    /* ===== HEADER (hapus blur) ===== */
     header{
       position:sticky;top:0;z-index:30;
-      background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.78));
-      backdrop-filter:saturate(160%) blur(10px);
+      background:linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,.95) 100%);
       border-bottom:1px solid rgba(148,163,184,.35);
     }
     .head-inner{max-width:1100px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:14px}
@@ -60,31 +65,32 @@
     .brand img{height:36px;width:auto;display:block;object-fit:contain;filter: drop-shadow(0 6px 18px rgba(2,6,23,.10));}
     .title{display:flex;flex-direction:column}
     .title h1{font-size:30px;line-height:1.1;margin:0;letter-spacing:.6px;font-weight:800;color:#0b7f91;}
+
     .hamburger{
       margin-left:auto;display:none;align-items:center;gap:8px;
-      border:1px solid rgba(148,163,184,.45);background:rgba(255,255,255,.85);
+      border:1px solid rgba(148,163,184,.45);background:#fff;
       border-radius:999px;padding:8px 12px;font-weight:800;cursor:pointer;
       box-shadow:0 8px 20px rgba(2,6,23,.08);
     }
     .hamburger svg{width:18px;height:18px}
 
-    /* Filters + Search */
+    /* ===== FILTERS (hapus blur) ===== */
     .filters{
       position:sticky; top:calc(var(--sticky-top)); z-index:25;
       margin:18px 0 10px;
-      background:rgba(255,255,255,.72);
+      background:#ffffff;
       border:1px solid rgba(148,163,184,.35);
       padding:12px;border-radius:16px;
       box-shadow:0 14px 34px rgba(2,6,23,.08);
-      backdrop-filter: blur(10px);
     }
     .filters .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
     .fgrp{
       display:flex;align-items:center;gap:8px;
-      background:rgba(255,255,255,.92);
+      background:#fff;
       border:1px solid rgba(148,163,184,.35);
       padding:8px 10px;border-radius:12px;
       box-shadow:0 8px 18px rgba(2,6,23,.06);
+      width:auto;
     }
     .fgrp label{font-size:12px;color:#334155;font-weight:800}
     .fgrp select{
@@ -93,13 +99,13 @@
       min-width:var(--sel-w);width:var(--sel-w)
     }
     .fgrp select:disabled{opacity:.55;cursor:not-allowed;background:#f8fafc}
-
     .f-actions{margin-left:auto;display:flex;gap:8px;align-items:center;}
 
-    /* Search bar (baru) */
+    /* ===== SEARCH (text tidak bold) ===== */
     .search{
+      position:relative; /* supaya dropdown suggest bisa absolute */
       display:flex;align-items:center;gap:8px;
-      background:rgba(255,255,255,.92);
+      background:#fff;
       border:1px solid rgba(148,163,184,.35);
       padding:8px 10px;border-radius:12px;
       box-shadow:0 8px 18px rgba(2,6,23,.06);
@@ -120,10 +126,60 @@
       width:100%;
       border:none;outline:none;
       background:transparent;
-      font: 700 13px/1.2 Montserrat, system-ui;
+      font: 500 13px/1.2 Montserrat, system-ui; /* <-- tidak bold */
       color:#0f172a;
     }
-    .search input::placeholder{color:#64748b;font-weight:700}
+    .search input::placeholder{color:#64748b;font-weight:500} /* <-- tidak bold */
+
+    /* ===== Suggest dropdown (baru) ===== */
+    .sug{
+      position:absolute;
+      left:0; right:0;
+      top:calc(100% + 8px);
+      background:#fff;
+      border:1px solid rgba(148,163,184,.45);
+      border-radius:14px;
+      box-shadow:0 18px 40px rgba(2,6,23,.12);
+      overflow:hidden;
+      z-index:99;
+      max-height:320px;
+      overflow:auto;
+    }
+    .sug .sug-hd{
+      padding:10px 12px;
+      border-bottom:1px solid rgba(148,163,184,.25);
+      font: 800 11px/1 Arial, Helvetica, sans-serif;
+      letter-spacing:.25px;
+      color:#334155;
+      background:linear-gradient(180deg, #ffffff, #f8fafc);
+    }
+    .sug .sug-item{
+      padding:10px 12px;
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      cursor:pointer;
+    }
+    .sug .sug-item:hover{background:#f8fafc}
+    .sug .sug-ico{
+      width:30px;height:30px;border-radius:10px;
+      display:flex;align-items:center;justify-content:center;
+      background:rgba(79,70,229,.10);
+      border:1px solid rgba(79,70,229,.18);
+      color:#0f172a;
+      flex:0 0 auto;
+    }
+    .sug .sug-ico svg{width:16px;height:16px}
+    .sug .sug-title{
+      font: 800 12px/1.2 Montserrat, system-ui;
+      color:#0f172a;
+      margin:0 0 4px;
+    }
+    .sug .sug-meta{
+      font: 600 11px/1.2 Montserrat, system-ui;
+      color:#64748b;
+      margin:0;
+    }
 
     .btn{
       border:none;outline:none;border-radius:999px;padding:10px 14px;
@@ -132,7 +188,7 @@
     }
     .btn:active{transform:translateY(1px)}
     .btn-primary{background:var(--brand);color:#00323a;box-shadow:0 10px 22px rgba(13,92,102,.20)}
-    .btn-ghost{background:rgba(255,255,255,.92);color:#0f172a;border:1px solid rgba(148,163,184,.45);box-shadow:0 10px 22px rgba(2,6,23,.08)}
+    .btn-ghost{background:#fff;color:#0f172a;border:1px solid rgba(148,163,184,.45);box-shadow:0 10px 22px rgba(2,6,23,.08)}
     #btn-clear, #mf-clear{
       background:linear-gradient(180deg, #ffffff 0%, #eef2ff 100%);
       border:1px solid rgba(99,102,241,.35);
@@ -147,7 +203,7 @@
       padding:8px 12px;
     }
 
-    /* Chips status bar (baru) */
+    /* Chips */
     .chips{
       display:flex;flex-wrap:wrap;gap:8px;
       margin:10px 0 6px;
@@ -181,7 +237,7 @@
       .hamburger{display:inline-flex}
     }
 
-    /* Skeleton grid (baru) */
+    /* Skeleton */
     .skeleton-grid{
       display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;
       min-height:40vh;
@@ -190,7 +246,7 @@
     @media (max-width:640px){.skeleton-grid{grid-template-columns:1fr;gap:8px}}
     .sk-card{
       border:1px solid rgba(148,163,184,.28);
-      background:rgba(255,255,255,.78);
+      background:#fff;
       border-radius:18px;
       box-shadow:0 10px 26px rgba(2,6,23,.06);
       padding:14px 14px 18px;
@@ -226,11 +282,11 @@
     .card{
       position:relative;
       border:1px solid rgba(148,163,184,.35);
-      background:rgba(255,255,255,.92);
+      background:#fff;
       border-radius:var(--radius);
       box-shadow:var(--shadow-soft);
       padding:14px 14px 52px;
-      transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease, background .16s ease;
+      transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease;
       cursor:pointer;
       overflow:hidden;
     }
@@ -244,26 +300,25 @@
       content:"";
       position:absolute;inset:-80px -120px auto auto;
       width:220px;height:220px;border-radius:50%;
-      background:radial-gradient(circle at 30% 30%, rgba(59,130,246,.18), transparent 60%);
+      background:radial-gradient(circle at 30% 30%, rgba(59,130,246,.14), transparent 60%);
       pointer-events:none;
     }
     .card:hover{
       transform:translateY(-3px);
       box-shadow:0 16px 40px rgba(2,6,23,.12);
       border-color:rgba(79,70,229,.35);
-      background:rgba(255,255,255,.96);
     }
     .card:focus{outline:2px solid rgba(79,70,229,.35); outline-offset:2px}
 
+    /* capsule status (hapus blur) */
     .cap-status{
       position:absolute;top:10px;right:10px;
-      background:rgba(255,255,255,.92);
+      background:#fff;
       border:1px solid rgba(148,163,184,.35);
       border-radius:14px;
       box-shadow:0 10px 22px rgba(2,6,23,.08);
       padding:6px 8px;
       display:grid;justify-items:center;gap:2px;min-width:68px;
-      backdrop-filter: blur(8px);
     }
     .cap-status .ico{line-height:0}
     .cap-status .ico svg{width:18px;height:18px}
@@ -276,6 +331,7 @@
     .job-title,.job-parent{display:flex;align-items:center;gap:8px}
     .job-title{margin:2px 0 4px;font-size:13px;font-weight:900;color:#0b2a32;letter-spacing:.2px}
     .job-parent{font-size:11px;font-weight:700;color:#0b4c57;margin:2px 0 10px;opacity:.95}
+
     .i{
       display:inline-flex;align-items:center;justify-content:center;
       width:28px;height:28px;border-radius:10px;
@@ -311,13 +367,13 @@
     .pill:active{transform:translateY(1px)}
     .pill-detail{background:#fff;border-color:var(--indigo);color:#000;}
 
-    /* Pager */
+    /* Pager (hapus blur) */
     .pager{
       display:flex;align-items:center;justify-content:center;gap:10px;margin-top:14px;
       position:sticky;bottom:0;
-      background:linear-gradient(180deg, transparent, rgba(255,255,255,.90) 40%);
+      background:linear-gradient(180deg, transparent, rgba(255,255,255,.96) 40%);
       padding:10px 0;z-index:10;
-      backdrop-filter: blur(8px);
+      border-top:1px solid rgba(148,163,184,.18);
     }
     .page-info{font:700 12px/1.4 Montserrat,system-ui;color:#0f172a}
 
@@ -325,15 +381,15 @@
 
     /* Modal */
     dialog{width:min(700px, 94vw);border:none;border-radius:20px;padding:0;box-shadow:0 30px 80px rgba(0,0,0,.35)}
-    #dlg::backdrop{backdrop-filter: blur(8px); background: rgba(2,6,23,.22)}
-    .modal{padding:18px 18px 16px;position:relative;background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.90))}
+    #dlg::backdrop{background: rgba(2,6,23,.22)}
+    .modal{padding:18px 18px 16px;position:relative;background:#fff}
     .modal .title h2{font-size:20px;color:#062e33;margin:0}
     .modal .sub{margin:6px 0 10px;font-size:13px;color:#0b4c57;font-weight:800}
     .modal .meta{display:flex;align-items:center;gap:8px;color:#083344;font-size:13px}
     .modal .meta svg{width:18px;height:18px}
     .modal .qual{
       margin-top:14px;font-size:14px;line-height:1.5;color:#0f172a;
-      background:rgba(241,245,249,.72);
+      background:#f8fafc;
       padding:14px;border-radius:12px;border:1px solid rgba(148,163,184,.35);
       max-height:min(46vh,420px);overflow:auto
     }
@@ -341,15 +397,15 @@
     .modal .actions{margin-top:16px;display:flex;gap:10px;justify-content:flex-end}
     .x{position:absolute;top:8px;right:10px;border:none;background:transparent;font-size:22px;line-height:1;cursor:pointer;color:#0f172a}
 
-    /* Apply button: bg biru, text merah, font Arial */
+    /* APPLY button di modal: border biru tua, bg putih, text merah, font Arial */
     .apply-btn{
       display:inline-flex;align-items:center;gap:6px;
       font-family: Arial, Helvetica, sans-serif !important;
       font-weight:700 !important;
-      background:#2563eb !important;
+      background:#ffffff !important;
       color:#ff0000 !important;
-      border:1px solid rgba(37,99,235,.55) !important;
-      box-shadow:0 14px 28px rgba(37,99,235,.22) !important;
+      border:2px solid var(--blueDeep) !important;
+      box-shadow:0 14px 28px rgba(2,6,23,.12) !important;
       text-decoration:none;
     }
     .apply-btn svg{color:#ff0000 !important}
@@ -357,11 +413,11 @@
     /* Mobile dialog filter */
     #dlg-filter::backdrop{background:rgba(2,6,23,.42)}
     #dlg-filter{width:min(520px,96vw);border:none;border-radius:16px;padding:0;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.35)}
-    .mfilter-hd{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid rgba(148,163,184,.35);background:rgba(255,255,255,.92)}
-    .mfilter-bd{padding:14px;background:rgba(241,245,249,.78)}
+    .mfilter-hd{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid rgba(148,163,184,.35);background:#fff}
+    .mfilter-bd{padding:14px;background:#f8fafc}
     .mfilter-row{display:flex;flex-direction:column;gap:8px}
     .mfilter-row .fgrp{width:100%}
-    .mfilter-ft{display:flex;justify-content:flex-end;gap:8px;padding:12px 14px;border-top:1px solid rgba(148,163,184,.35);background:rgba(255,255,255,.92)}
+    .mfilter-ft{display:flex;justify-content:flex-end;gap:8px;padding:12px 14px;border-top:1px solid rgba(148,163,184,.35);background:#fff}
   </style>
 </head>
 
@@ -383,7 +439,6 @@
   </header>
 
   <div class="wrap">
-    <!-- Filters + Search -->
     <section class="filters" aria-label="Filter Loker">
       <div class="row">
         <div class="fgrp">
@@ -399,12 +454,13 @@
           <select id="f-parent" title="Pilih Area dulu" disabled></select>
         </div>
 
-        <!-- Search bar (baru) -->
+        <!-- Search bar + Suggest -->
         <div class="search" role="search" aria-label="Pencarian job">
           <div class="sico" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 4a6 6 0 1 0 0 12 6 6 0 0 0 0-12Zm-8 6a8 8 0 1 1 14.32 4.906l4.387 4.387-1.414 1.414-4.387-4.387A8 8 0 0 1 2 10Z"/></svg>
           </div>
           <input id="q" type="search" placeholder="Cari job (nama / group job / area)..." autocomplete="off" />
+          <div class="sug" id="sug" hidden></div>
         </div>
 
         <div class="f-actions">
@@ -414,7 +470,6 @@
       </div>
     </section>
 
-    <!-- Chips (baru) -->
     <div class="chips" aria-label="Status chips">
       <div class="chip active" id="chip-all" data-chip="all" role="button" tabindex="0">
         <span class="dot"></span><span>ALL</span> <span id="chip-all-count">0</span>
@@ -427,9 +482,7 @@
       </div>
     </div>
 
-    <!-- Skeleton (baru) -->
     <section id="skeleton" class="skeleton-grid" aria-hidden="true">
-      <!-- 12 placeholder -->
       <div class="sk-card"><div class="sk-line lg"></div><div class="sk-line md"></div><div class="sk-line sm"></div><div class="sk-line md"></div><div class="sk-pill"></div></div>
       <div class="sk-card"><div class="sk-line lg"></div><div class="sk-line md"></div><div class="sk-line sm"></div><div class="sk-line md"></div><div class="sk-pill"></div></div>
       <div class="sk-card"><div class="sk-line lg"></div><div class="sk-line md"></div><div class="sk-line sm"></div><div class="sk-line md"></div><div class="sk-pill"></div></div>
@@ -445,7 +498,6 @@
     </section>
 
     <div id="status" class="status" role="status" aria-live="polite" aria-busy="true" style="display:none">Mengambil data…</div>
-
     <section id="grid" class="grid" hidden></section>
 
     <div id="pager" class="pager" hidden>
@@ -500,10 +552,16 @@
           <label for="mf-parent">Group Job</label>
           <select id="mf-parent" title="Pilih Area dulu" disabled></select>
         </div>
-        <div class="fgrp" style="width:100%">
-          <label for="mf-q">Search</label>
-          <input id="mf-q" type="search" placeholder="Cari job..." style="border:none;outline:none;background:transparent;font:700 13px/1.2 Montserrat,system-ui;width:100%" />
+
+        <!-- Mobile search + suggest -->
+        <div class="search" style="width:100%">
+          <div class="sico" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 4a6 6 0 1 0 0 12 6 6 0 0 0 0-12Zm-8 6a8 8 0 1 1 14.32 4.906l4.387 4.387-1.414 1.414-4.387-4.387A8 8 0 0 1 2 10Z"/></svg>
+          </div>
+          <input id="mf-q" type="search" placeholder="Cari job..." autocomplete="off" />
+          <div class="sug" id="mf-sug" hidden></div>
         </div>
+
       </div>
     </div>
     <div class="mfilter-ft">
@@ -566,8 +624,11 @@
     const $mfApply = document.getElementById('mf-apply');
     const $mfClear = document.getElementById('mf-clear');
     const $mfClose = document.getElementById('mf-close');
+
     const $q = document.getElementById('q');
+    const $sug = document.getElementById('sug');
     const $mfQ = document.getElementById('mf-q');
+    const $mfSug = document.getElementById('mf-sug');
 
     const $skeleton = document.getElementById('skeleton');
 
@@ -583,7 +644,7 @@
     let pageSize = 12;
     let filtered = [];
 
-    // NEW: state UI
+    // state UI
     let qText = '';
     let chipMode = 'all'; // all | urgent | always
 
@@ -773,7 +834,7 @@
         </article>`;
     }
 
-    // ====== NEW: apply search + chip filter on top of existing filter ======
+    // ====== Search + Chip match
     function matchSearch(r, q){
       if(!q) return true;
       const hay = `${r[COL.JOB_NAME]||''} ${r[COL.JOB_PARENT]||''} ${r[COL.AREA]||''}`.toLowerCase();
@@ -786,7 +847,7 @@
       return true;
     }
 
-    // ====== Filtering (base filter tetap, ditambah search & chip) ======
+    // ====== Filtering
     function applyFilter(){
       const bKey = toKey($branch.value);
       const aKey = toKey($area.value);
@@ -874,9 +935,8 @@
     }
     function closeModal(){ if($dlg.open) $dlg.close(); else $dlg.removeAttribute('open'); }
 
-    // ====== Chips counts (baru) ======
+    // ====== Chips counts
     function updateChipCounts(){
-      // hitung berdasarkan base filter (Branch/Area/Group/Search) tapi chip belum dipakai (biar count terasa “live”)
       const bKey = toKey($branch.value);
       const aKey = toKey($area.value);
       const pKey = toKey($parent.value);
@@ -908,10 +968,105 @@
       else $chipAll.classList.add('active');
       applyFilter();
     }
-
     function wireChip(el, mode){
       el.addEventListener('click', ()=> setChip(mode));
       el.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); setChip(mode);} });
+    }
+
+    // ====== NEW: Suggest (muncul saat >= 3 huruf) ======
+    const MIN_SUG = 3;
+    const MAX_SUG = 10;
+
+    function buildSuggestions(q){
+      const qq = (q||'').trim().toLowerCase();
+      if(qq.length < MIN_SUG) return [];
+
+      const out = [];
+      const seen = new Set();
+
+      for(const r of rows){
+        const job = norm(r[COL.JOB_NAME]);
+        if(!job) continue;
+
+        const jobL = job.toLowerCase();
+        if(!jobL.includes(qq)) continue;
+
+        const parent = norm(r[COL.JOB_PARENT]);
+        const area = norm(r[COL.AREA]);
+        const key = (jobL + '|' + parent.toLowerCase() + '|' + area.toLowerCase());
+        if(seen.has(key)) continue;
+        seen.add(key);
+
+        out.push({ job, parent, area });
+        if(out.length >= MAX_SUG) break;
+      }
+
+      return out;
+    }
+
+    function renderSug(container, items){
+      if(!items.length){
+        container.hidden = true;
+        container.innerHTML = '';
+        return;
+      }
+
+      container.hidden = false;
+      container.innerHTML =
+        `<div class="sug-hd">Suggestions</div>` +
+        items.map(it => `
+          <div class="sug-item" data-job="${esc(it.job)}">
+            <div class="sug-ico" aria-hidden="true">${I.briefcase}</div>
+            <div>
+              <p class="sug-title">${esc(it.job)}</p>
+              <p class="sug-meta">${esc(it.parent || '-')} • ${esc(it.area || '-')}</p>
+            </div>
+          </div>
+        `).join('');
+    }
+
+    function hideSug(container){
+      container.hidden = true;
+      container.innerHTML = '';
+    }
+
+    function attachSugBehavior(inputEl, sugEl, onPick){
+      let t = null;
+
+      inputEl.addEventListener('input', ()=>{
+        clearTimeout(t);
+        t = setTimeout(()=>{
+          const v = inputEl.value || '';
+          const items = buildSuggestions(v);
+          renderSug(sugEl, items);
+        }, 90);
+      });
+
+      sugEl.addEventListener('click', (e)=>{
+        const item = e.target.closest('.sug-item');
+        if(!item) return;
+        const job = item.getAttribute('data-job') || '';
+        if(job){
+          onPick(job);
+          hideSug(sugEl);
+        }
+      });
+
+      // Close on outside click
+      document.addEventListener('click', (e)=>{
+        const inside = (e.target === inputEl) || sugEl.contains(e.target);
+        if(!inside) hideSug(sugEl);
+      });
+
+      // ESC to close
+      inputEl.addEventListener('keydown', (e)=>{
+        if(e.key === 'Escape'){ hideSug(sugEl); }
+      });
+
+      // Blur: kecilkan risiko “hilang sebelum klik” (pakai timeout)
+      inputEl.addEventListener('blur', ()=>{
+        setTimeout(()=> hideSug(sugEl), 160);
+      });
     }
 
     // ====== Events ======
@@ -936,6 +1091,7 @@
     $btnClear.addEventListener('click', ()=>{
       $branch.value=''; $area.value=''; $parent.value='';
       qText=''; $q.value='';
+      hideSug($sug);
       chipMode='all'; setChip('all');
       updateAreaOptions();
       applyFilter();
@@ -944,7 +1100,7 @@
     $area.addEventListener('change', ()=>{ updateParentOptions(); applyFilter(); });
     $parent.addEventListener('change', applyFilter);
 
-    // Search (baru): live search (debounce ringan)
+    // Search live
     let tQ = null;
     $q.addEventListener('input', ()=>{
       clearTimeout(tQ);
@@ -954,7 +1110,7 @@
       }, 120);
     });
 
-    // Chips (baru)
+    // Chips
     wireChip($chipAll, 'all');
     wireChip($chipUrgent, 'urgent');
     wireChip($chipAlways, 'always');
@@ -970,7 +1126,10 @@
       $mfArea.value = $area.value || '';
       updateMobileParentOptions();
       $mfParent.value = $parent.value || '';
+
       $mfQ.value = $q.value || '';
+      hideSug($mfSug);
+
       if(typeof $dlgFilter.showModal === 'function') $dlgFilter.showModal(); else $dlgFilter.setAttribute('open','');
     });
     $mfBranch.addEventListener('change', ()=>{ updateMobileAreaOptions(); $mfParent.value=''; });
@@ -981,14 +1140,17 @@
       $area.value   = $mfArea.value;
       updateAreaOptions();
       $parent.value = $mfParent.value;
+
       $q.value = $mfQ.value || '';
       qText = $q.value || '';
       applyFilter();
+
       if($dlgFilter.open) $dlgFilter.close();
     });
     $mfClear.addEventListener('click', ()=>{
       $mfBranch.value=''; $mfArea.value=''; $mfParent.value=''; $mfQ.value='';
       updateMobileAreaOptions(); updateMobileParentOptions();
+      hideSug($mfSug);
     });
     $mfClose.addEventListener('click', ()=>{ if($dlgFilter.open) $dlgFilter.close(); });
 
@@ -1017,6 +1179,17 @@
           }
         }
 
+        // Attach suggest AFTER rows ready (cache might already fill rows, but safe)
+        // We'll attach here after we are sure rows is set, and also attach again after fetch (same handlers ok)
+        attachSugBehavior($q, $sug, (job)=>{
+          $q.value = job;
+          qText = job;
+          applyFilter();
+        });
+        attachSugBehavior($mfQ, $mfSug, (job)=>{
+          $mfQ.value = job;
+        });
+
         const res = await getData();
         rows = stripHeader(res.rows || res) || [];
         rows = rows.filter(r => r && (String(r[COL.JOB_NAME]||'').trim() || String(r[COL.JOB_PARENT]||'').trim() || String(r[COL.AREA]||'').trim() || String(r[COL.BRANCH]||'').trim()));
@@ -1038,6 +1211,7 @@
 
       adjustMinHeight();
     })();
+
   })();
   </script>
 </body>
